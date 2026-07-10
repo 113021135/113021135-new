@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apple Store — MacBook Pro</title>
+  <link rel="stylesheet" href="style2.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <nav class="navbar">
+
+    <!-- Top bar: Logo + Search + Icons -->
+    <div class="navbar-top">
+      <div class="container">
+
+        <div class="nav-logo">
+          <svg class="apple-icon" width="20" height="24" viewBox="0 0 814 1000" fill="currentColor">
+            <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 405.8 8.4 287.5 8.4 174.7c0-111.6 39.5-170.3 92.2-220.9 49.3-46.8 130.3-73.9 208.1-73.9 77.1 0 133.9 30.2 179.3 30.2 43.2 0 111.6-32.7 199.2-32.7zm-234-181.5c37.1-44.5 64.5-106.6 64.5-168.7 0-8.3-.6-16.6-2-23.6-61.6 2.3-134.6 41.1-177.7 91.3-33.9 37.7-67.4 99.8-67.4 162.8 0 9 1.4 18 2 20.9 3.8.6 9.7 1.4 15.5 1.4 55.5.1 119.2-37.2 165.1-84.1z"/>
+          </svg>
+          <span class="logo-apple">Apple</span>
+          <span class="logo-store">Store</span>
+        </div>
+
+        <div class="nav-search">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" placeholder="Search Apple products..." />
+          <button class="search-btn">Search</button>
+        </div>
+
+        <div class="nav-icons">
+          <a href="#" class="nav-icon-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Sign In</span>
+          </a>
+          <a href="#" class="nav-icon-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span>Cart</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bottom bar: Category links -->
+    <div class="navbar-bottom">
+      <div class="container">
+        <ul class="nav-links">
+          <li><a href="#">Store</a></li>
+          <li><a href="#">Mac</a></li>
+          <li><a href="#">iPad</a></li>
+          <li><a href="#">iPhone</a></li>
+          <li><a href="#">Watch</a></li>
+          <li><a href="#">AirPods</a></li>
+          <li><a href="#">Accessories</a></li>
+          <li><a href="#">Support</a></li>
+        </ul>
+      </div>
+    </div>
+
+  </nav>
+
+  <div class="breadcrumb">
+    <div class="container">
+      <a href="#">Store</a><span>›</span>
+      <a href="#">Mac</a><span>›</span>
+      <a href="#">MacBook Pro</a><span>›</span>
+      <span>MacBook Pro 14-inch</span>
+    </div>
+  </div>
+
+  <main class="product-wrapper">
+    <div class="container">
+      <div class="product-layout">
+
+        <section class="gallery">
+
+          <div class="gallery-main">
+            <span class="official-badge">✦ Apple Official</span>
+            <img id="main-img"
+              src="main.jpg"
+              alt="MacBook Pro 14-inch" />
+          </div>
+
+          <div class="gallery-thumbs">
+            <button class="thumb active"
+              onclick="swapImage(this,'front.jpg')">
+              <img src="front.jpg" alt="Front view" />
+            </button>
+            <button class="thumb"
+              onclick="swapImage(this,'keyboard.jpg')">
+              <img src="keyboard.jpg" alt="Side view" />
+            </button>
+            <button class="thumb"
+              onclick="swapImage(this,'port.jpg')">
+              <img src="port.jpg" alt="Keyboard" />
+            </button>
+            <button class="thumb"
+              onclick="swapImage(this,'side.jpg')">
+              <img src="side.jpg" alt="Ports" />
+            </button>
+          </div>
+
+          <!-- Wishlist & Share -->
+          <div class="gallery-util">
+            <button class="util-btn">♡ &nbsp;Wishlist</button>
+            <button class="util-btn">↗ &nbsp;Share</button>
+          </div>
+
+        </section>
+
+        <section class="product-info">
+
+          <!-- Category tag -->
+          <div class="product-tag">
+            <span class="tag-chip">Mac</span>
+            <span class="tag-chip green">New 2024</span>
+          </div>
+
+          <!-- Product title -->
+          <h1 class="product-title">Apple MacBook Pro 14‑inch — M3 Pro Chip</h1>
+
+          <!-- Rating stars -->
+          <div class="product-rating">
+            <div class="stars">
+              <span class="star filled">★</span>
+              <span class="star filled">★</span>
+              <span class="star filled">★</span>
+              <span class="star filled">★</span>
+              <span class="star half">★</span>
+            </div>
+            <span class="rating-num">4.9</span>
+            <span class="rating-sep">|</span>
+            <a href="#" class="rating-link">3,812 Reviews</a>
+            <span class="rating-sep">|</span>
+            <span class="rating-sold">2,400+ Sold</span>
+          </div>
+
+          <!-- Price -->
+          <div class="price-box">
+            <div class="price-row">
+              <span class="price-current">$1,999.00</span>
+              <span class="price-badge">SAVE 13%</span>
+            </div>
+            <div class="price-original-row">
+              <span class="price-original">$2,299.00</span>
+              <span class="price-saved">You save $300.00</span>
+            </div>
+          </div>
+
+          <!-- Promo tags -->
+          <div class="promo-row">
+            <span class="promo-chip">🚚 Free Shipping</span>
+            <span class="promo-chip">🛡 1-Year Warranty</span>
+            <span class="promo-chip">↩ 14-Day Returns</span>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Description -->
+          <p class="product-desc">
+            The MacBook Pro 14‑inch with M3 Pro delivers exceptional performance for professional workflows. Featuring the breathtaking Liquid Retina XDR display, up to 22 hours of battery life, and a stunning Space Black finish — this is pro computing, perfected.
+          </p>
+
+          <div class="divider"></div>
+
+          <!-- Color / Finish — Size Selector -->
+          <div class="selector-group">
+            <p class="selector-label">Finish: <strong id="color-label">Space Black</strong></p>
+            <div class="color-options">
+              <button class="color-btn active" style="background:#2a2a2e;"
+                title="Space Black" onclick="selectColor(this,'Space Black')">
+                <span class="color-check">✓</span>
+              </button>
+              <button class="color-btn" style="background:#d4cfc9;"
+                title="Silver" onclick="selectColor(this,'Silver')">
+                <span class="color-check">✓</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Storage — Size Selector -->
+          <div class="selector-group">
+            <p class="selector-label">Storage:</p>
+            <div class="size-options">
+              <button class="size-btn active" onclick="selectSize(this)">512 GB</button>
+              <button class="size-btn" onclick="selectSize(this)">1 TB</button>
+              <button class="size-btn" onclick="selectSize(this)">2 TB</button>
+            </div>
+          </div>
+
+          <!-- Quantity Selector -->
+          <div class="selector-group">
+            <p class="selector-label">Quantity:</p>
+            <div class="qty-row">
+              <div class="quantity-selector">
+                <button class="qty-btn" onclick="changeQty(-1)">−</button>
+                <span class="qty-value" id="qty">1</span>
+                <button class="qty-btn" onclick="changeQty(1)">+</button>
+              </div>
+              <span class="stock-note">48 units in stock</span>
+            </div>
+          </div>
+
+          <!-- Add to Cart button -->
+          <div class="cart-actions">
+            <button class="btn-wishlist" title="Add to Wishlist">♡</button>
+            <button class="btn-cart" onclick="addToCart()">+ Add to Cart</button>
+            <button class="btn-buy" onclick="buyNow()">Buy Now</button>
+          </div>
+
+          <!-- Delivery info -->
+          <div class="delivery-info">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            <div>
+              <p class="delivery-title">Free Delivery</p>
+              <p class="delivery-sub">Estimated arrival: <strong>Tomorrow, Mar 18</strong></p>
+            </div>
+          </div>
+
+        </section>
+
+      </div><!-- end .product-layout -->
+    </div><!-- end .container -->
+  </main>
+
+  <section class="related-section">
+    <div class="container">
+
+      <div class="related-header">
+        <h2 class="related-title-h">You Might Also Like</h2>
+        <a href="#" class="see-all">See All ›</a>
+      </div>
+
+
+      <div class="related-grid">
+
+        <div class="related-card">
+          <div class="related-img-wrap">
+            <img src="m3 16 inch.jpg" alt="MacBook Pro 16" />
+          </div>
+          <div class="related-body">
+            <h3 class="related-name">MacBook Pro 16‑inch M3 Max</h3>
+            <p class="related-price">$2,499.00</p>
+            <div class="related-meta">
+              <span class="rel-stars">★★★★★</span>
+              <span class="rel-sold">1.2k sold</span>
+            </div>
+            <button class="btn-related">+ Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="related-card">
+          <div class="related-img-wrap">
+            <img src="m2 air.jpg" alt="MacBook Air 15" />
+          </div>
+          <div class="related-body">
+            <h3 class="related-name">MacBook Air 15‑inch M2</h3>
+            <p class="related-price">$1,299.00</p>
+            <div class="related-meta">
+              <span class="rel-stars">★★★★★</span>
+              <span class="rel-sold">3.5k sold</span>
+            </div>
+            <button class="btn-related">+ Add to Cart</button>
+          </div>
+        </div>
+        <div class="related-card">
+          <div class="related-img-wrap">
+            <img src="airpod.jpg" alt="AirPods Pro" />
+          </div>
+          <div class="related-body">
+            <h3 class="related-name">AirPods Pro 2nd Generation</h3>
+            <p class="related-price">$249.00</p>
+            <div class="related-meta">
+              <span class="rel-stars">★★★★★</span>
+              <span class="rel-sold">8.1k sold</span>
+            </div>
+            <button class="btn-related">+ Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="related-card">
+          <div class="related-img-wrap">
+            <img src="mousejpg.jpg" alt="Magic Mouse" />
+          </div>
+          <div class="related-body">
+            <h3 class="related-name">Apple Magic Mouse — Space Black</h3>
+            <p class="related-price">$79.00</p>
+            <div class="related-meta">
+              <span class="rel-stars">★★★★☆</span>
+              <span class="rel-sold">920 sold</span>
+            </div>
+            <button class="btn-related">+ Add to Cart</button>
+          </div>
+        </div>
+
+      </div><!-- end .related-grid -->
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <svg width="16" height="20" viewBox="0 0 814 1000" fill="currentColor"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 405.8 8.4 287.5 8.4 174.7c0-111.6 39.5-170.3 92.2-220.9 49.3-46.8 130.3-73.9 208.1-73.9 77.1 0 133.9 30.2 179.3 30.2 43.2 0 111.6-32.7 199.2-32.7zm-234-181.5c37.1-44.5 64.5-106.6 64.5-168.7 0-8.3-.6-16.6-2-23.6-61.6 2.3-134.6 41.1-177.7 91.3-33.9 37.7-67.4 99.8-67.4 162.8 0 9 1.4 18 2 20.9 3.8.6 9.7 1.4 15.5 1.4 55.5.1 119.2-37.2 165.1-84.1z"/></svg>
+            <span>Apple Store</span>
+          </div>
+          <p>The best way to buy the products you love.</p>
+        </div>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+          <a href="#">Sales & Refunds</a>
+          <a href="#">Legal</a>
+          <a href="#">Site Map</a>
+        </div>
+      </div>
+      <p class="footer-copy">Copyright © 2026 Apple Inc. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    function swapImage(btn, src) {
+      const img = document.getElementById('main-img');
+      img.style.opacity = '0.3';
+      setTimeout(() => { img.src = src; img.style.opacity = '1'; }, 180);
+      document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+    }
+    function selectSize(btn) {
+      btn.closest('.size-options').querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+    function selectColor(btn, name) {
+      document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('color-label').textContent = name;
+    }
+    function changeQty(delta) {
+      const el = document.getElementById('qty');
+      let v = parseInt(el.textContent) + delta;
+      if (v < 1) v = 1; if (v > 48) v = 48;
+      el.textContent = v;
+    }
+    function addToCart() {
+      const btn = document.querySelector('.btn-cart');
+      btn.textContent = '✓ Added to Cart!';
+      btn.classList.add('added');
+      setTimeout(() => { btn.textContent = '+ Add to Cart'; btn.classList.remove('added'); }, 2200);
+    }
+    function buyNow() {
+      const btn = document.querySelector('.btn-buy');
+      btn.textContent = 'Processing...';
+      setTimeout(() => btn.textContent = 'Buy Now', 1500);
+    }
+  </script>
+
+</body>
+</html>
