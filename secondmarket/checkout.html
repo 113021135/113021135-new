@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout | SecondMarket</title>
+    <link rel="stylesheet" href="style.css"> 
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f4f6f8; padding: 40px; }
+        
+        /* Updated Grid to widen the page and put the right column beside the left */
+        .checkout-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 450px; gap: 30px; align-items: stretch; }
+        
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .item-row { display: flex; align-items: center; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; }
+        
+        /* Made cart images slightly smaller to fit the right column cleanly */
+        .cart-item-img { width: 70px; height: 70px; object-fit: cover; border-radius: 8px; margin-right: 15px; }
+        .qty-btn { padding: 5px 10px; cursor: pointer; border: 1px solid #ddd; background: #fff; border-radius: 4px; }
+        .btn-pay { width: 100%; padding: 15px; background: #111; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 20px; transition: background 0.2s;}
+        .btn-pay:hover { background: #333; }
+        .btn-pay:disabled { background: #999; cursor: not-allowed; }
+        
+        /* Scrollable Cart Area */
+        .cart-scroll-area { max-height: 400px; overflow-y: auto; padding-right: 10px; }
+        
+        /* Payment Styles */
+        .payment-option-group { margin: 15px 0; display: flex; flex-direction: column; gap: 10px; }
+        .payment-option-group label { display: flex; align-items: center; cursor: pointer; padding: 10px; border: 1px solid #eee; border-radius: 6px; }
+        
+        /* Rating Styles */
+        .success-screen { display: none; text-align: center; padding: 50px; max-width: 800px; margin: 0 auto;}
+        .star { font-size: 35px; cursor: pointer; color: #e5e7eb; transition: 0.2s; }
+        .star:hover, .star.active { color: #f59e0b; }
+        
+        #creditCardInputArea { margin-top: 10px; padding: 10px; background: #fdfdfd; border: 1px dashed #ccc; border-radius: 6px; display: none; }
+        .card-input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        /* Custom Themed Validation Tooltips */
+        .input-error-border {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+        }
+        
+        .custom-error-tooltip {
+            color: #b91c1c;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+            animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
+        }
+        
+        /* The little arrow pointing up to the input field */
+        .custom-error-tooltip::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 15px;
+            width: 8px;
+            height: 8px;
+            background: #fef2f2;
+            border-left: 1px solid #fecaca;
+            border-top: 1px solid #fecaca;
+            transform: rotate(45deg);
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div id="mainCheckout" class="checkout-container">
+    
+    <div style="display: flex; flex-direction: column;">
+        <div class="card" id="billingDetailsCard" style="flex: 1;"> <h2 style="margin-bottom: 25px; border-bottom: 2px solid #f3f4f6; padding-bottom: 15px;">Shipping & Billing Details</h2>
+            <form id="checkoutForm" style="display: flex; flex-direction: column; gap: 20px;">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <label style="font-size: 13px; font-weight: 600; color: #4b5563;">First Name <span style="color:red">*</span></label>
+                        <input type="text" id="chkFirstName" required placeholder="John" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <label style="font-size: 13px; font-weight: 600; color: #4b5563;">Last Name <span style="color:red">*</span></label>
+                        <input type="text" id="chkLastName" required placeholder="Doe" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <label style="font-size: 13px; font-weight: 600; color: #4b5563;">Email Address <span style="color:red">*</span></label>
+                        <input type="email" id="chkEmail" required placeholder="john.doe@example.com" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <label style="font-size: 13px; font-weight: 600; color: #4b5563;">Phone Number <span style="color:red">*</span></label>
+                        <input type="tel" id="chkPhone" required placeholder="0912345678" oninput="this.value = this.value.replace(/[^0-9]/g, '')" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 5px;">
+                    <label style="font-size: 13px; font-weight: 600; color: #4b5563;">Country <span style="color:red">*</span></label>
+                    <select id="chkCountry" required style="padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: white;">
+                        <option value="">Select a country...</option>
+                        <option value="TW">Taiwan</option>
+                        <option value="US">United States</option>
+                        <option value="ID">Indonesia</option>
+                        <option value="MY">Malaysia</option>
+                        <option value="SG">Singapore</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 5px;">
+                    <label style="font-size: 13px; font-weight: 600; color: #4b5563;">Street Address <span style="color:red">*</span></label>
+                    <input type="text" id="chkAddress" required placeholder="123 Main St, Apt 4B" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <label style="font-size: 13px; font-weight: 600; color: #4b5563;">City <span style="color:red">*</span></label>
+                        <input type="text" id="chkCity" required placeholder="Taipei City" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <label style="font-size: 13px; font-weight: 600; color: #4b5563;">State / Province <span style="color:red">*</span></label>
+                        <input type="text" id="chkState" required placeholder="Taiwan" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <label style="font-size: 13px; font-weight: 600; color: #4b5563;">ZIP Code <span style="color:red">*</span></label>
+                        <input type="text" id="chkZip" required placeholder="100" oninput="this.value = this.value.replace(/[^0-9]/g, '')" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                </div>
+
+                <div id="policyContainer" style="margin-top: 10px; display: flex; align-items: flex-start; gap: 12px; padding: 15px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; transition: border-color 0.2s;">
+                    <input type="checkbox" id="chkPolicy" required onchange="clearFieldError('policyContainer')" style="margin-top: 2px; width: 16px; height: 16px; cursor: pointer;">
+                    <label for="chkPolicy" style="font-size: 13px; color: #4b5563; cursor: pointer; line-height: 1.5;">
+                        I have read and agree to the website <a href="#" style="color: #2563eb; text-decoration: none; font-weight: 600;">Terms & Conditions</a> and <a href="#" style="color: #2563eb; text-decoration: none; font-weight: 600;">Privacy Policy</a>. <span style="color:red">*</span>
+                    </label>
+                </div>
+            </form>
+        </div>
+    </div> 
+
+    <div style="display: flex; flex-direction: column; gap: 30px;">
+        
+        <div class="card">
+            <h2 style="margin-bottom: 15px; border-bottom: 2px solid #f3f4f6; padding-bottom: 15px;">Shopping Cart</h2>
+            <div id="cartItemsContainer" class="cart-scroll-area">Loading your items...</div>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-bottom: 15px; border-bottom: 2px solid #f3f4f6; padding-bottom: 15px;">Order Summary</h3>
+            <div id="totalSection" style="margin-bottom: 20px; font-size: 20px; color: #111;"></div>
+
+            <label style="font-size: 14px; font-weight: 600; color: #4b5563;">Select Payment Method:</label>
+            <div class="payment-option-group">
+                <label><input type="radio" name="paymentMethod" value="cash" checked onclick="toggleCreditCardField()"> &nbsp; Cash on Delivery</label>
+                <label><input type="radio" name="paymentMethod" value="digital_wallet" onclick="toggleCreditCardField()"> &nbsp; Digital Wallet</label>
+                <label><input type="radio" name="paymentMethod" value="credit_card" onclick="toggleCreditCardField()"> &nbsp; Credit / Debit Card</label>
+            </div>
+
+            <div id="creditCardInputArea">
+                <input type="text" id="cardNumber" class="card-input" placeholder="Enter 16-digit Card Number">
+            </div>
+
+            <button id="payButton" class="btn-pay" onclick="processPayment()">Proceed to Payment</button>
+            <button style="width:100%; padding:10px; background:none; border:none; color:#888; cursor:pointer; font-weight: 600;" onclick="window.location.href='index.html'">Continue Shopping</button>
+        </div>
+        
+    </div>
+</div>
+
+<div id="successScreen" class="card success-screen">
+    <h2 style="color: #22c55e; font-size: 32px; margin-bottom: 10px;">🎉 Payment Successful!</h2>
+    <p style="font-size: 16px; color: #4b5563;">Thank you for your order. Your transaction has been securely processed.</p>
+    
+    <div id="ratingSection" style="margin-top: 30px; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;">
+        <p style="font-weight: bold; margin-bottom: 10px;">Rate your experience with the store: <span id="storeNameDisplay" style="color: #3b82f6;"></span></p>
+        <div id="stars">
+            <span class="star" onclick="submitRating(1)">★</span>
+            <span class="star" onclick="submitRating(2)">★</span>
+            <span class="star" onclick="submitRating(3)">★</span>
+            <span class="star" onclick="submitRating(4)">★</span>
+            <span class="star" onclick="submitRating(5)">★</span>
+        </div>
+    </div>
+    
+    <div id="productReviewSection" style="margin-top: 20px; text-align: left; background: #f9fafb; padding: 20px; border-radius: 8px;">
+        </div>
+    
+    <button onclick="window.location.href='index.html'" class="btn-pay" style="width: auto; padding: 12px 30px; margin-top: 20px; font-size: 16px;">Back to Marketplace</button>
+</div>
+
+<script>
+    let cartData = [];
+    let currentVendorId = null;
+
+    // --- CUSTOM VALIDATION SYSTEM ---
+    function showFieldError(inputId, message) {
+        clearFieldError(inputId); // Clear existing error first
+        
+        const inputEl = document.getElementById(inputId);
+        inputEl.classList.add('input-error-border');
+        
+        const tooltip = document.createElement('div');
+        tooltip.className = 'custom-error-tooltip';
+        tooltip.id = `error-${inputId}`;
+        tooltip.innerHTML = `⚠️ ${message}`;
+        
+        // Insert the tooltip right after the input element
+        inputEl.parentNode.insertBefore(tooltip, inputEl.nextSibling);
+        
+        // Automatically remove the error the moment the user starts typing again
+        inputEl.addEventListener('input', function removeOnType() {
+            clearFieldError(inputId);
+            inputEl.removeEventListener('input', removeOnType);
+        });
+        inputEl.addEventListener('change', function removeOnChange() {
+            clearFieldError(inputId);
+            inputEl.removeEventListener('change', removeOnChange);
+        });
+    }
+
+    function clearFieldError(inputId) {
+        const inputEl = document.getElementById(inputId);
+        if(inputEl) inputEl.classList.remove('input-error-border');
+        const tooltip = document.getElementById(`error-${inputId}`);
+        if(tooltip) tooltip.remove();
+    }
+
+    function clearAllErrors() {
+        document.querySelectorAll('.custom-error-tooltip').forEach(el => el.remove());
+        document.querySelectorAll('.input-error-border').forEach(el => el.classList.remove('input-error-border'));
+    }
+
+    function toggleCreditCardField() {
+        const selected = document.querySelector('input[name="paymentMethod"]:checked').value;
+        document.getElementById('creditCardInputArea').style.display = (selected === 'credit_card') ? 'block' : 'none';
+    }
+
+    async function loadCart() {
+        try {
+            const res = await fetch('api.php?action=get_cart');
+            cartData = await res.json();
+            const container = document.getElementById('cartItemsContainer');
+            const totalSection = document.getElementById('totalSection');
+            
+            container.innerHTML = '';
+            let total = 0;
+
+            if (cartData.length === 0) {
+                container.innerHTML = '<p style="color: #999;">Your cart is empty.</p>';
+                totalSection.innerHTML = '<strong>Total: NT$0</strong>';
+                document.getElementById('payButton').disabled = true;
+                return;
+            }
+
+            cartData.forEach(item => {
+                total += (parseFloat(item.effective_price) * item.quantity);
+                const imgPath = item.product_image && item.product_image !== 'default_product.png' ? `uploads/${item.product_image}` : 'https://placehold.co/100x100/f3f4f6/a3a3a3?text=No+Image';
+                
+                container.innerHTML += `
+                    <div class="item-row">
+                        <div style="display: flex; align-items: center; max-width: 65%;">
+                            <img src="${imgPath}" class="cart-item-img" alt="${item.title}">
+                            <div style="overflow: hidden;">
+                                <strong style="font-size: 14px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.title}</strong>
+                                <span style="color: #ff4d4f; font-weight: bold; font-size: 13px;">NT$${parseFloat(item.effective_price).toLocaleString()}</span> 
+                                <span style="color: #666; font-size: 12px;">x ${item.quantity}</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 5px; align-items: center;">
+                            <button class="qty-btn" onclick="updateQty(${item.cart_id}, -1)">-</button>
+                            <button class="qty-btn" onclick="updateQty(${item.cart_id}, 1)">+</button>
+                            <button class="qty-btn" style="color:red; border-color: #fee2e2; background: #fff1f0; padding: 5px 8px; font-size: 12px;" onclick="removeItem(${item.cart_id})">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            });
+            totalSection.innerHTML = `<strong>Total: NT$${total.toLocaleString()}</strong>`;
+            document.getElementById('payButton').disabled = false;
+        } catch (err) {
+            console.error("Failed to load cart:", err);
+            document.getElementById('cartItemsContainer').innerHTML = "<p style='color:red;'>Error loading cart data.</p>";
+        }
+    }
+
+    async function processPayment() {
+        const payBtn = document.getElementById('payButton');
+        clearAllErrors(); // Reset all previous errors
+        
+        // 1. VALIDATE SHIPPING FORM DYNAMICALLY
+        const requiredFields = [
+            { id: 'chkFirstName', msg: 'Please enter your first name.' },
+            { id: 'chkLastName', msg: 'Please enter your last name.' },
+            { id: 'chkEmail', msg: 'Email address is required.' },
+            { id: 'chkPhone', msg: 'Phone number is required.' },
+            { id: 'chkCountry', msg: 'Please select a country.' },
+            { id: 'chkAddress', msg: 'Street address is required.' },
+            { id: 'chkCity', msg: 'City is required.' },
+            { id: 'chkState', msg: 'State/Province is required.' },
+            { id: 'chkZip', msg: 'ZIP code is required.' }
+        ];
+
+        let hasError = false;
+        let firstErrorElement = null;
+
+        // Check for empty fields
+        requiredFields.forEach(field => {
+            const el = document.getElementById(field.id);
+            if (!el.value.trim()) {
+                showFieldError(field.id, field.msg);
+                hasError = true;
+                if (!firstErrorElement) firstErrorElement = el;
+            }
+        });
+
+        // Specific Email "@" validation
+        const emailEl = document.getElementById('chkEmail');
+        if (emailEl.value.trim() && !emailEl.value.includes('@')) {
+            showFieldError('chkEmail', `Please include an '@' in the email address. '${emailEl.value}' is missing an '@'.`);
+            hasError = true;
+            if (!firstErrorElement) firstErrorElement = emailEl;
+        }
+
+        // Specific Policy Check
+        const policyAgreed = document.getElementById('chkPolicy').checked;
+        const policyContainer = document.getElementById('policyContainer');
+        if (!policyAgreed) {
+            showFieldError('policyContainer', "You must agree to the Terms & Conditions and Privacy Policy to place your order.");
+            hasError = true;
+            if (!firstErrorElement) firstErrorElement = policyContainer;
+        }
+
+        // If any errors occurred, stop the payment and scroll to the first mistake
+        if (hasError) {
+            if (firstErrorElement) {
+                firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                firstErrorElement.focus();
+            }
+            return;
+        }
+
+        // --- ALL VALIDATION PASSED. GATHER CLEAN DATA ---
+        const firstName = document.getElementById('chkFirstName').value.trim();
+        const lastName = document.getElementById('chkLastName').value.trim();
+        const city = document.getElementById('chkCity').value.trim();
+        const state = document.getElementById('chkState').value.trim();
+        const zip = document.getElementById('chkZip').value.trim();
+        const country = document.getElementById('chkCountry').value;
+        const address = document.getElementById('chkAddress').value.trim();
+
+        try {
+            const radio = document.querySelector('input[name="paymentMethod"]:checked');
+            if (!radio) { alert('Please select a payment method'); return; }
+
+            const method = radio.value;
+            const cardNumber = document.getElementById('cardNumber');
+
+            if (method === 'credit_card' && (!cardNumber || cardNumber.value.trim() === '')) {
+                showFieldError('cardNumber', 'Please enter your 16-digit card number.');
+                cardNumber.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            // Lock the button to prevent double-charging
+            payBtn.innerText = "Processing Transaction...";
+            payBtn.disabled = true;
+
+            let fd = new FormData();
+            fd.append('payment_method', method);
+            fd.append('shipping_name', firstName + ' ' + lastName);
+            fd.append('shipping_address', `${address}, ${city}, ${state}, ${zip}, ${country}`);
+            
+            const response = await fetch('api.php?action=process_payment', { method: 'POST', body: fd });
+            
+            // ... (keep the rest of your processPayment function exactly the same below here)
+            const textResult = await response.text(); 
+            let result;
+            try {
+                result = JSON.parse(textResult);
+            } catch(e) {
+                alert("Server returned an invalid response. Please check your PHP logs.");
+                console.error("Raw Server Response:", textResult);
+                payBtn.innerText = "Proceed to Payment";
+                payBtn.disabled = false;
+                return;
+            }
+
+            if (result.success) {
+                document.getElementById('mainCheckout').style.display = 'none';
+                document.getElementById('successScreen').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                if (cartData && cartData.length > 0) {
+                    currentVendorId = cartData[0].vendor_id;
+                    const storeName = document.getElementById('storeNameDisplay');
+                    if (storeName) storeName.innerText = cartData[0].shop_name || 'Vendor Store';
+                }
+
+                const reviewSection = document.getElementById('productReviewSection');
+                reviewSection.innerHTML = '<h3 style="margin-bottom:15px; border-bottom: 1px solid #e5e7eb; padding-bottom: 10px;">Rate your purchased items:</h3>';
+                
+                cartData.forEach(item => {
+                    reviewSection.innerHTML += `
+                        <div id="review-box-${item.product_id}" style="border: 1px solid #e5e7eb; padding: 20px; border-radius: 8px; margin-bottom: 15px; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                            <div style="font-weight: 700; font-size: 16px; margin-bottom: 5px; color: #111827;">${item.title}</div>
+                            <div style="font-size: 12px; color: #6b7280; margin-bottom: 12px;">Purchased from: ${item.shop_name}</div>
+                            
+                            <div id="stars-${item.product_id}" style="margin-bottom: 12px;">
+                                <span class="star" onclick="setProductRating(${item.product_id}, 1)">★</span>
+                                <span class="star" onclick="setProductRating(${item.product_id}, 2)">★</span>
+                                <span class="star" onclick="setProductRating(${item.product_id}, 3)">★</span>
+                                <span class="star" onclick="setProductRating(${item.product_id}, 4)">★</span>
+                                <span class="star" onclick="setProductRating(${item.product_id}, 5)">★</span>
+                            </div>
+                            
+                            <input type="hidden" id="rating-val-${item.product_id}" value="0">
+                            
+                            <textarea id="comment-${item.product_id}" placeholder="Write a public comment to help others... (optional)" style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #d1d5db; font-family: inherit; resize: vertical; height: 70px; box-sizing: border-box;"></textarea>
+                            
+                            <button onclick="submitProductReview(${item.product_id})" style="margin-top: 12px; padding: 10px 20px; background: #2563eb; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s;">Publish Product Review</button>
+                        </div>
+                    `;
+                });
+            } else {
+                alert("Checkout Failed: " + result.message);
+                payBtn.innerText = "Proceed to Payment";
+                payBtn.disabled = false;
+            }
+        } catch (error) {
+            console.error("Payment exception:", error);
+            alert("A network error occurred. Please try again.");
+            payBtn.innerText = "Proceed to Payment";
+            payBtn.disabled = false;
+        }
+    }
+
+    async function submitRating(rating) {
+        const stars = document.querySelectorAll('#stars .star');
+        stars.forEach((s, idx) => s.classList.toggle('active', idx < rating));
+
+        let fd = new FormData();
+        fd.append('vendor_id', currentVendorId);
+        fd.append('rating', rating);
+        
+        const res = await fetch('api.php?action=submit_rating', { method: 'POST', body: fd });
+        const data = await res.json();
+        if(data.success) {
+            alert('Thank you for rating this store!');
+        } else {
+            alert(data.message);
+        }
+    }
+
+    async function updateQty(cartId, change) {
+        let fd = new FormData();
+        fd.append('cart_id', cartId);
+        fd.append('change', change); 
+        const res = await fetch('api.php?action=update_cart_quantity', { method: 'POST', body: fd });
+        const data = await res.json();
+        
+        if (!data.success) {
+            alert(data.message); // Alerts the user if they try to exceed stock
+        }
+        loadCart();
+    }
+
+    async function removeItem(cartId) {
+        let fd = new FormData();
+        fd.append('cart_id', cartId);
+        await fetch('api.php?action=remove_from_cart', { method: 'POST', body: fd });
+        loadCart();
+    }
+
+    function setProductRating(productId, rating) {
+        document.getElementById(`rating-val-${productId}`).value = rating;
+        const stars = document.querySelectorAll(`#stars-${productId} .star`);
+        stars.forEach((s, idx) => s.classList.toggle('active', idx < rating));
+    }
+
+    async function submitProductReview(productId) {
+        const rating = document.getElementById(`rating-val-${productId}`).value;
+        const comment = document.getElementById(`comment-${productId}`).value;
+        
+        if (rating == 0) { alert('Please select a star rating first.'); return; }
+        
+        let fd = new FormData();
+        fd.append('product_id', productId);
+        fd.append('rating', rating);
+        fd.append('comment', comment);
+        
+        const res = await fetch('api.php?action=submit_product_comment', { method: 'POST', body: fd });
+        const data = await res.json();
+        
+        if (data.success) {
+            document.getElementById(`review-box-${productId}`).innerHTML = '<div style="background: #ecfdf5; border: 1px solid #10b981; padding: 20px; border-radius: 8px; text-align: center;"><p style="color: #059669; font-weight: bold; margin: 0; font-size: 16px;">✅ Review published successfully. Thank you!</p></div>';
+        } else {
+            alert(data.message);
+        }
+    }
+
+    // Initialize cart on page load
+    loadCart();
+</script>
+</body>
+</html>
+
+```
